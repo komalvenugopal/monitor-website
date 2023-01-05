@@ -34,7 +34,6 @@ while True:
         # newHash = hashlib.sha224(nresponse.encode('utf-8')).hexdigest()
         if nresponse == cresponse:
             print("No Change: ",datetime.now())
-            continue
         else:
             # current_file.write(cresponse)
             # new_file.write(nresponse)
