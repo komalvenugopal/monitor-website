@@ -21,22 +21,24 @@ url = Request(args.url, headers={'User-Agent': 'Mozilla/5.0'})
 cresponse = urlopen(url).read()
 cresponse=re.sub('''<a href="/cdn-cgi/l/email-protection#[0-9a-z]*">''', "<a>", str(cresponse))
 currentHash = hashlib.sha224(cresponse.encode('utf-8')).hexdigest()
-print("running")
+print("Started the process at: ",datetime.now())
 
 # current_file = open("current.txt", "w")
 # new_file = open("new.txt", "w")
-
+c=0
 while True:
     try:
+        print("Check-", c, " triggered : ",datetime.now())
         nresponse = urlopen(url).read()
         nresponse=re.sub('''<a href="/cdn-cgi/l/email-protection#[0-9a-z]*">''', "<a>", str(nresponse))
         # newHash = hashlib.sha224(nresponse.encode('utf-8')).hexdigest()
         if nresponse == cresponse:
+            print("No Change: ",datetime.now())
             continue
         else:
             # current_file.write(cresponse)
             # new_file.write(nresponse)
-            print("something changed")
+            print("Something Changed at: ",datetime.now())
             cresponse = urlopen(url).read()
             cresponse=re.sub('''<a href="/cdn-cgi/l/email-protection#[0-9a-z]*">''', "<a>", str(cresponse))
             # currentHash = hashlib.sha224(cresponse.encode('utf-8')).hexdigest()
@@ -51,6 +53,7 @@ while True:
             }]
             notifier.notify()
             print("Alert Sent at: ", datetime.now())
+        c=c+1
         time.sleep(3600)
 
     except Exception as e:
@@ -65,6 +68,6 @@ while True:
             }
         }]
         notifier.notify()
-
+        time.sleep(300)
 # current_file.close()
 # new_file.close()
